@@ -1,17 +1,44 @@
 import java.io.*;
+import java.util.*;
 import java.net.*;
 import java.nio.charset.*;
-import org.json.*;
+//import org.json.*;
 
 class autocomp {
 
 
 public static void main(String[] args) throws Exception {
+  /*
   String url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
   String data = readUrl(url, "please tell me more details about your");
 
   //JSONObject json = new JSONObject(data);
   System.out.println(data);
+  */
+
+  System.out.println("input a sentence for autocompletion");
+  Scanner in = new Scanner(System.in);
+  String strIn = in.nextLine();
+
+  String url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
+  String data = readUrl(url, strIn);
+  StringTokenizer tokendata = new StringTokenizer(data);
+  StringTokenizer intok = new StringTokenizer(strIn);
+  int incount = 0;
+  while(intok.hasMoreTokens()){
+    String h = intok.nextToken();
+    incount++;
+  }
+
+  String printtoken = "";
+  int i = 0;
+  while(i < incount + 1){
+    printtoken = printtoken+  " " + tokendata.nextToken();
+    i++;
+  }
+
+  //JSONObject json = new JSONObject(data);
+  System.out.println(printtoken);
 }
 
 
@@ -38,7 +65,10 @@ private static String readUrl(String urlString, String postData) throws Exceptio
         while ((read = reader.read(chars)) != -1)
             buffer.append(chars, 0, read);
 
-        return buffer.toString();
+        String outfull = buffer.toString();
+        StringTokenizer out = new StringTokenizer(outfull);
+        return outfull;//out.nextToken();
+
     } finally {
         if (reader != null)
             reader.close();
