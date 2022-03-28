@@ -65,9 +65,7 @@ private static String readUrl(String urlString, String postData) throws Exceptio
         while ((read = reader.read(chars)) != -1)
             buffer.append(chars, 0, read);
 
-        String outfull = buffer.toString();
-        StringTokenizer out = new StringTokenizer(outfull);
-        return outfull;//out.nextToken();
+        return buffer.toString();
 
     } finally {
         if (reader != null)
