@@ -1,0 +1,7 @@
+Lauren Lee, Talia Hsia, Diana Akhmedova
+
+4/4/2022
+- Finished implementing auto completion for one word and full sentences.
+
+NEXT GOALS:
+- Spell checker!
