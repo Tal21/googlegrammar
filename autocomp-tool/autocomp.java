@@ -22,13 +22,16 @@ public static void main(String[] args) throws Exception {
     String url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
     String data = readUrl(url, strIn);
     System.out.println(createSentenceToken(strIn, data));
-    while (strIn != "exit") {
+    boolean finished;
+    while (strIn.equals("exit") == false) {
     //  Scanner in = new Scanner(System.in);
-      strIn = in.nextLine();
       // System.out.println("input a sentence for autocompletion or input exit to exit");
       url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
       data = readUrl(url, strIn);
       System.out.println(createSentenceToken(strIn, data));
+      strIn = in.nextLine();
+
+
     }
     in.close();
     // StringTokenizer tokendata = new StringTokenizer(data);
