@@ -1,8 +1,14 @@
+package com.mkyong;
+
 import java.io.*;
 import java.util.*;
 import java.net.*;
 import java.nio.charset.*;
-//import org.json.*;
+//import org.json.simple.JSONArray;
+//import org.json.simple.JSONObject;
+//import org.json.simple.JSONValue;
+//import org.json.JSONObject;
+//import javax.json.stream;
 
 class autocomp {
 
@@ -12,9 +18,9 @@ public static void main(String[] args) throws Exception {
   String url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
   String data = readUrl(url, "please tell me more details about your");
 
-  //JSONObject json = new JSONObject(data);
+  JSONObject json = new JSONObject(data);
   System.out.println(data);
-  */
+*/
 
     System.out.println("input a sentence for autocompletion or input exit to exit");
     Scanner in = new Scanner(System.in);
@@ -28,9 +34,18 @@ public static void main(String[] args) throws Exception {
       // System.out.println("input a sentence for autocompletion or input exit to exit");
       url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
       data = readUrl(url, strIn);
-      System.out.println(createSentenceToken(strIn, data));
+      String output = createSentenceToken(strIn, data);
+      // Gson g = new Gson();
+      // JSONObject jsobj = g.toJSON(output);
+      //
+      JSONObject j = new JSONObject();
+      JSONValue v = new JSONValue();
+      Object obj = v.parse(output);
+      JSONObject jsonObject = (JSONObject) obj;
       strIn = in.nextLine();
 
+      String parsed = (String) jsonObject.get("generated_text");
+      System.out.println(parsed);
 
     }
     in.close();
@@ -97,10 +112,12 @@ public static String createSentenceToken(String input, String data){
 
   String nex = tokendata.nextToken();
   while (nex.indexOf(".") < 0 && nex.indexOf("!") < 0 && nex.indexOf("?") < 0){
+    printtoken = printtoken +  " " + nex;
     nex = tokendata.nextToken();
     //System.out.println(nex);
-    printtoken = printtoken +  " " + nex;
   }
+  printtoken = printtoken + " " + nex;
+
 
   return printtoken;
 }
@@ -111,10 +128,10 @@ private static String readUrl(String urlString, String postData) throws Exceptio
     String token = "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";
     try {
         URL url = new URL(urlString);
-        HttpURLConnection conn= (HttpURLConnection) url.openConnection();
-        byte[] postDataBytes = postData.getBytes("UTF-8");
+        HttpURLConnection conn= (HttpURLConnection) url.openConnection(); //connect to internet
+        byte[] postDataBytes = postData.getBytes("UTF-8"); //encoding
 
-        conn.setRequestProperty("Authorization", "Bearer "+token);
+        conn.setRequestProperty("Authorization", "Bearer "+token); //authorization token
         conn.setRequestMethod("POST");
         //conn.setRequestProperty("Content-Type", "application/json");
         conn.setRequestProperty("Content-Length", String.valueOf(postDataBytes.length));
