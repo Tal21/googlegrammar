@@ -1,4 +1,3 @@
-package com.mkyong;
 
 import java.io.*;
 import java.util.*;
@@ -7,6 +6,7 @@ import java.nio.charset.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
 //import org.json.JSONObject;
 //import javax.json.stream;
 
@@ -34,18 +34,23 @@ public static void main(String[] args) throws Exception {
       // System.out.println("input a sentence for autocompletion or input exit to exit");
       url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
       data = readUrl(url, strIn);
-      String output = createSentenceToken(strIn, data);
+      String output = stringFullToken(strIn, data);
       // Gson g = new Gson();
       // JSONObject jsobj = g.toJSON(output);
       //
-      JSONObject j = new JSONObject();
-      JSONValue v = new JSONValue();
-      Object obj = v.parse(output);
-      JSONObject jsonObject = (JSONObject) obj;
-      strIn = in.nextLine();
+      System.out.println(output);
+      JSONParser parser = new JSONParser();
+      JSONObject json = (JSONObject) parser.parse(output);
 
-      String parsed = (String) jsonObject.get("generated_text");
-      System.out.println(parsed);
+      System.out.println(json.stringify());
+      // JSONObject j = new JSONObject();
+      // JSONValue v = new JSONValue(
+      // Object obj = v.parse(output);
+      // JSONObject jsonObject = (JSONObject) obj;
+      strIn = in.nextLine();
+      //
+      // String parsed = (String) jsonObject.get("generated_text");
+      // System.out.println(parsed);
 
     }
     in.close();
@@ -70,7 +75,7 @@ public static void main(String[] args) throws Exception {
 }
 
 //hello returns a link
-public static String createOneToken(String input, String data){
+public static String stringFullToken(String input, String data){
   StringTokenizer tokendata = new StringTokenizer(data);
   StringTokenizer intok = new StringTokenizer(input);
   /*
@@ -82,7 +87,7 @@ public static String createOneToken(String input, String data){
   */
 
   String printtoken = "";
-  for(int i = 0; i <= intok.countTokens(); i++){
+  for(int i = 0; i < tokendata.countTokens(); i++){
     printtoken = printtoken+  " " + tokendata.nextToken();
   }
   /*
@@ -94,7 +99,20 @@ public static String createOneToken(String input, String data){
   return printtoken;
 }
 
-public static String createSentenceToken(String input, String data){
+public static String stringOneToken(JSONObject output, String input, String data){
+  StringTokenizer tokendata = new StringTokenizer(data);
+  StringTokenizer intok = new StringTokenizer(input);
+
+  String[] tokens = output.split(\\s+);
+
+  String printToken = "";
+  for (int i = 0; i < intok.countToken(); i++){
+    printToken = printToken + token[i] + " ";
+  }
+  printToken = printToken + token[i];
+}
+
+public static JSONObject stringSentenceToken(JSONObject output, String input, String data){
   StringTokenizer tokendata = new StringTokenizer(data);
   StringTokenizer intok = new StringTokenizer(input);
   /*
@@ -105,19 +123,19 @@ public static String createSentenceToken(String input, String data){
   }
   */
 
-  String printtoken = "";
-  for(int i = 0; i <= intok.countTokens(); i++){
-    printtoken = printtoken+  " " + tokendata.nextToken();
+  String[] tokens = output.split(\\s+);
+
+  String printToken = "";
+  for (int i = 0; i < intok.countToken(); i++){
+    printToken = printToken + token[i] + " ";
   }
+  printToken = printToken + token[i];
 
   String nex = tokendata.nextToken();
-  while (nex.indexOf(".") < 0 && nex.indexOf("!") < 0 && nex.indexOf("?") < 0){
-    printtoken = printtoken +  " " + nex;
-    nex = tokendata.nextToken();
-    //System.out.println(nex);
+  int i = intok.countTokens();
+  while (printToken[i].indexOf(".") < 0 && printToken[i].indexOf("!") < 0 && printToken[i].indexOf("?") < 0){
+    printToken = printToken + token[i] + " ";
   }
-  printtoken = printtoken + " " + nex;
-
 
   return printtoken;
 }
