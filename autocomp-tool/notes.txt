@@ -3,5 +3,13 @@ Lauren Lee, Talia Hsia, Diana Akhmedova
 4/4/2022
 - Finished implementing auto completion for one word and full sentences.
 
+4/25/2022
+- SpellChecker compiles, runtime error where it spellchecks "no" when user
+  is asked if they want to add the word to the dictionary.
+
 NEXT GOALS:
 - Spell checker!
+- Grammar checker!
+
+REFERENCES:
+- words.txt :: https://github.com/dwyl/english-words
