@@ -27,7 +27,7 @@ public static void main(String[] args) throws Exception {
     String strIn = in.nextLine();
     String url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
     String data = readUrl(url, strIn);
-    System.out.println(createSentenceToken(strIn, data));
+    System.out.println(stringFullToken(strIn, data));
     boolean finished;
     while (strIn.equals("exit") == false) {
     //  Scanner in = new Scanner(System.in);
@@ -41,8 +41,11 @@ public static void main(String[] args) throws Exception {
       System.out.println(output);
       JSONParser parser = new JSONParser();
       JSONObject json = (JSONObject) parser.parse(output);
+      System.out.println("test");
+      System.out.println(stringOneToken(json, strIn, data));
 
-      System.out.println(json.stringify());
+    //  System.out.println(json.stringify());
+
       // JSONObject j = new JSONObject();
       // JSONValue v = new JSONValue(
       // Object obj = v.parse(output);
@@ -106,13 +109,16 @@ public static String stringOneToken(JSONObject output, String input, String data
   String[] tokens = output.split("\\s+");
 
   String printToken = "";
-  for (int i = 0; i < intok.countToken(); i++){
-    printToken = printToken + token[i] + " ";
+  int temp = 0;
+  for (int i = 0; i < intok.countTokens(); i++){
+    printToken = printToken + tokens[i] + " ";
+    temp  = i;
   }
-  printToken = printToken + token[i];
+  printToken = printToken + tokens[temp+1];
+  return printToken;
 }
 
-public static JSONObject stringSentenceToken(JSONObject output, String input, String data){
+public static String stringSentenceToken(JSONObject output, String input, String data){
   StringTokenizer tokendata = new StringTokenizer(data);
   StringTokenizer intok = new StringTokenizer(input);
   /*
@@ -122,22 +128,25 @@ public static JSONObject stringSentenceToken(JSONObject output, String input, St
     incount++;
   }
   */
+  String out = output.toString();
 
   String[] tokens = output.split("\\s+");
 
   String printToken = "";
-  for (int i = 0; i < intok.countToken(); i++){
-    printToken = printToken + token[i] + " ";
+  int temp = 0;
+  for (int i = 0; i < intok.countTokens(); i++){
+    printToken = printToken + tokens[i] + " ";
+    temp = i;
   }
-  printToken = printToken + token[i];
+  printToken = printToken + tokens[temp+1];
 
   String nex = tokendata.nextToken();
   int i = intok.countTokens();
-  while (printToken[i].indexOf(".") < 0 && printToken[i].indexOf("!") < 0 && printToken[i].indexOf("?") < 0){
-    printToken = printToken + token[i] + " ";
+  while (tokens[i].indexOf(".") < 0 && tokens[i].indexOf("!") < 0 && tokens[i].indexOf("?") < 0){
+    printToken = printToken + tokens[i] + " ";
   }
 
-  return printtoken;
+  return printToken;
 }
 
 
