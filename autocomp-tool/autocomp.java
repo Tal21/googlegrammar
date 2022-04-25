@@ -106,7 +106,9 @@ public static String stringOneToken(JSONObject output, String input, String data
   StringTokenizer tokendata = new StringTokenizer(data);
   StringTokenizer intok = new StringTokenizer(input);
 
-  String[] tokens = output.split("\\s+");
+  String out = output.toString();
+
+  String[] tokens = out.split("\\s+");
 
   String printToken = "";
   int temp = 0;
@@ -130,7 +132,7 @@ public static String stringSentenceToken(JSONObject output, String input, String
   */
   String out = output.toString();
 
-  String[] tokens = output.split("\\s+");
+  String[] tokens = out.split("\\s+");
 
   String printToken = "";
   int temp = 0;
