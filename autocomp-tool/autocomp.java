@@ -103,7 +103,7 @@ public static String stringOneToken(JSONObject output, String input, String data
   StringTokenizer tokendata = new StringTokenizer(data);
   StringTokenizer intok = new StringTokenizer(input);
 
-  String[] tokens = output.split(\\s+);
+  String[] tokens = output.split("\\s+");
 
   String printToken = "";
   for (int i = 0; i < intok.countToken(); i++){
@@ -123,7 +123,7 @@ public static JSONObject stringSentenceToken(JSONObject output, String input, St
   }
   */
 
-  String[] tokens = output.split(\\s+);
+  String[] tokens = output.split("\\s+");
 
   String printToken = "";
   for (int i = 0; i < intok.countToken(); i++){
