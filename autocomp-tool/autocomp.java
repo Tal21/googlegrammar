@@ -151,6 +151,12 @@ public static String stringSentenceToken(JSONObject output, String input, String
   return printToken;
 }
 
+//method with JSON string buffer Object
+
+public static String jsonSentenceParser(StringBuffer input){
+  return "see other doc";
+}
+
 
 private static String readUrl(String urlString, String postData) throws Exception {
     BufferedReader reader = null;

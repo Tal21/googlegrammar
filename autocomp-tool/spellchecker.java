@@ -13,13 +13,13 @@ public class spellchecker {
     String strIn = in.nextLine();
 
     while (strIn.equals("exit") == false) {
-      if (spellCheck(strIn, words)) {
+      if (spellCheck(strIn, words) == 0) {
         System.out.println("No spelling errors!");
         System.out.println("\nInput a sentence for spellchecking or input 'exit' to exit:");
         strIn = in.nextLine();
       }
       else {
-        System.out.println("There are " + errorCount + " errors!");
+        System.out.println("Number of incorrectly spelled words: " + errorCount);
         System.out.println("\nInput a sentence for spellchecking or input 'exit' to exit:");
         strIn = in.nextLine();
       }
@@ -28,7 +28,7 @@ public class spellchecker {
     in.close();
   }
 
-  public static boolean spellCheck(String input, String[] dictionary) {
+  public static int spellCheck(String input, String[] dictionary) {
     String check = "";
     boolean errors = false;
 
@@ -41,7 +41,7 @@ public class spellchecker {
       if (!checkWord(check, dictionary)) {
         System.out.println("\n" + check + " is spelled incorrectly!");
         errorCount++;
-        errors = true;
+        //errors = true;
 
         System.out.println("\nWould you like to add " + check + " to the dictionary? (yes/no)");
         Scanner in = new Scanner(System.in);
@@ -63,10 +63,10 @@ public class spellchecker {
         }
       }
     }
-    if (errorCount == 0) {
+    /*if (errorCount == 0) {
       errors = false;
-    }
-    return errors;
+    }*/
+    return errorCount;
   }
 
   public static boolean checkWord(String input, String[] dictionary) {
