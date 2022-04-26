@@ -27,7 +27,7 @@ public static void main(String[] args) throws Exception {
     String strIn = in.nextLine();
     String url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
     String data = readUrl(url, strIn);
-    System.out.println(stringFullToken(strIn, data));
+    System.out.println(data);
     boolean finished;
     while (strIn.equals("exit") == false) {
     //  Scanner in = new Scanner(System.in);
@@ -38,11 +38,11 @@ public static void main(String[] args) throws Exception {
       // Gson g = new Gson();
       // JSONObject jsobj = g.toJSON(output);
       //
-      System.out.println(output);
+      System.out.println(data);
       JSONParser parser = new JSONParser();
-      JSONObject json = (JSONObject) parser.parse(output);
+      System.out.println(parser.parse(data));
       System.out.println("test");
-      System.out.println(stringOneToken(json, strIn, data));
+//      System.out.println(stringOneToken(json, strIn, data));
 
     //  System.out.println(json.stringify());
 
@@ -90,7 +90,7 @@ public static String stringFullToken(String input, String data){
   */
 
   String printtoken = "";
-  for(int i = 0; i < tokendata.countTokens(); i++){
+  for(int i = 0; i <= tokendata.countTokens()+1; i++){
     printtoken = printtoken+  " " + tokendata.nextToken();
   }
   /*
