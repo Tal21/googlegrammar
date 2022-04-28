@@ -3,11 +3,15 @@ import java.io.*;
 import java.util.*;
 import java.net.*;
 import java.nio.charset.*;
+/*
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
-//import org.json.JSONObject;
+*/
+import org.json.JSONTokener;
+import org.json.JSONObject;
+import org.json.JSONArray;
 //import javax.json.stream;
 
 class autocomp {
@@ -26,22 +30,28 @@ public static void main(String[] args) throws Exception {
     Scanner in = new Scanner(System.in);
     String strIn = in.nextLine();
     String url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
-    String data = readUrl(url, strIn);
-    System.out.println(data);
+    /*String data = readUrl(url, strIn);
+    System.out.println(data);*/
     boolean finished;
     while (strIn.equals("exit") == false) {
     //  Scanner in = new Scanner(System.in);
       // System.out.println("input a sentence for autocompletion or input exit to exit");
-      url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
-      data = readUrl(url, strIn);
+      //url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
+      String data = readUrl(url, strIn);
       String output = stringFullToken(strIn, data);
+      JSONTokener tokener = new JSONTokener(data);
+      JSONArray arr = new JSONArray(tokener);
+      System.out.println(arr.getJSONObject(0).get("generated_text"));
+
+
       // Gson g = new Gson();
       // JSONObject jsobj = g.toJSON(output);
-      //
-      System.out.println(data);
+
+      /*
       JSONParser parser = new JSONParser();
       System.out.println(parser.parse(data));
-      System.out.println("test");
+      */
+      //System.out.println("test");
 //      System.out.println(stringOneToken(json, strIn, data));
 
     //  System.out.println(json.stringify());
