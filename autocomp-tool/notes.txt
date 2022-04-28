@@ -14,3 +14,7 @@ NEXT GOALS:
 
 REFERENCES:
 - words.txt :: https://github.com/dwyl/english-words
+
+FOR RUNNING:
+$ javac autocomp.java -cp "./*"
+$ java -cp "json.jar:." autocomp
