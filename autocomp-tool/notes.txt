@@ -9,6 +9,7 @@ Lauren Lee, Talia Hsia, Diana Akhmedova
 
 NEXT GOALS:
 - Spell checker!
+    * Suggest words (eg: Did you mean... __?)
 - Grammar checker!
 
 REFERENCES:
