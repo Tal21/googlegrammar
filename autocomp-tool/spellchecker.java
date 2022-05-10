@@ -60,6 +60,7 @@ public class spellchecker {
         }
         else {
           System.out.println("\nThe word was not added.");
+          //put in closest word
         }
       }
     }
@@ -101,6 +102,17 @@ public class spellchecker {
     recArr = rec.toArray(recArr);
 
     return recArr;
+  }
+
+  public static String closestWord(String word){
+    /* bad method
+      loop through dictionary for words with same Length
+      for each word with same Length
+      go through each character and calculate letter difference
+      if letter difference count is greater than carrying variable replace.
+
+    */
+
   }
 
 }
