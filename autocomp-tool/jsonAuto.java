@@ -36,7 +36,7 @@ public class jsonAuto{
   public static String jsonSentenceParser(StringBuffer input){
     String output = "";
 
-    while()
+//    while()
 
     return "see other doc";
   }
