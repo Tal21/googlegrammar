@@ -18,73 +18,22 @@ class autocomp {
 
 
 public static void main(String[] args) throws Exception {
-  /*
-  String url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
-  String data = readUrl(url, "please tell me more details about your");
-
-  JSONObject json = new JSONObject(data);
-  System.out.println(data);
-*/
-
     System.out.println("input a sentence for autocompletion or input exit to exit");
     Scanner in = new Scanner(System.in);
     String strIn = in.nextLine();
     String url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
-    /*String data = readUrl(url, strIn);
-    System.out.println(data);*/
+
     boolean finished;
     while (strIn.equals("exit") == false) {
-    //  Scanner in = new Scanner(System.in);
-      // System.out.println("input a sentence for autocompletion or input exit to exit");
-      //url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
       String data = readUrl(url, strIn);
       String output = stringFullToken(strIn, data);
       JSONTokener tokener = new JSONTokener(data);
       JSONArray arr = new JSONArray(tokener);
       System.out.println(arr.getJSONObject(0).get("generated_text"));
-
-
-      // Gson g = new Gson();
-      // JSONObject jsobj = g.toJSON(output);
-
-      /*
-      JSONParser parser = new JSONParser();
-      System.out.println(parser.parse(data));
-      */
-      //System.out.println("test");
-//      System.out.println(stringOneToken(json, strIn, data));
-
-    //  System.out.println(json.stringify());
-
-      // JSONObject j = new JSONObject();
-      // JSONValue v = new JSONValue(
-      // Object obj = v.parse(output);
-      // JSONObject jsonObject = (JSONObject) obj;
       strIn = in.nextLine();
-      //
-      // String parsed = (String) jsonObject.get("generated_text");
-      // System.out.println(parsed);
 
     }
     in.close();
-    // StringTokenizer tokendata = new StringTokenizer(data);
-    // StringTokenizer intok = new StringTokenizer(strIn);
-    // int incount = 0;
-    // while(intok.hasMoreTokens()){
-    //   String h = intok.nextToken();
-    //   incount++;
-    // }
-    //
-    // String printtoken = "";
-    // int i = 0;
-    // while(i < incount + 1){
-    //   printtoken = printtoken+  " " + tokendata.nextToken();
-    //   i++;
-    // }
-
-    //JSONObject json = new JSONObject(data);
-    //System.out.println(createSentenceToken(strIn, data));
-
 }
 
 //hello returns a link
