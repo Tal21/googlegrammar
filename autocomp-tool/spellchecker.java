@@ -43,7 +43,7 @@ public class spellchecker {
         errorCount++;
         //errors = true;
 
-        String[] threeWords = similarWord(input, dictionary);
+        String[] threeWords = similarWord(check, dictionary);
         System.out.println("Did you mean: " + threeWords[0] + "[1], " + threeWords[1] + "[2], or " + threeWords[2] + "[3]? (no/1/2/3)");
         Scanner in = new Scanner(System.in);
         String strIn = in.nextLine();
@@ -61,8 +61,8 @@ public class spellchecker {
         }
         else {
           System.out.println("\nWould you like to add " + check + " to the dictionary? (yes/no)");
-          Scanner in = new Scanner(System.in);
-          String strIn = in.nextLine();
+          Scanner inn = new Scanner(System.in);
+          String strInn = in.nextLine();
 
           if (strIn.toLowerCase().equals("yes") || strIn.toLowerCase().equals("y")) {
             try {
@@ -136,45 +136,79 @@ public class spellchecker {
   public static String[] similarWord(String word, String[] dictionary) {
     ArrayList<String> similarWords = new ArrayList<String>();
     String[] threeWords = new String[3];
+    int counter = 0;
+    int counter2 = 0;
 
     for (String s : dictionary) {
-      if (s.length() == word.length()) {
-        int difference = checkDifference(s, word);
-        if (difference <= 3) {
-          if (similarWords.isEmpty()) {
-            similarWords.add(s);
+      int difference = checkDifference(s, word);
+      if (difference <= 2) {
+        // checks if AL is empty
+        if (similarWords.isEmpty()) {
+          similarWords.add(s);
+        }
+        // checks if first chars are the same and if difference is less than or equal to 1
+        else if ((s.charAt(0) == word.charAt(0)) && difference <= 1) {
+          similarWords.add(counter, s);
+          counter++;
+          counter2++;
+        }
+        // checks if the word lengths are the same and if difference is less than or equal to 1
+        else if (s.length() == word.length() && difference <= 1) {
+          similarWords.add(counter2, s);
+          counter2++;
+        }
+        // otherwise add to the AL, sorting by lowest to highest difference
+        else {
+          // for (int i = counter2; i < similarWords.size(); i++) {
+          //
+          //     int diffAtI = checkDifference(similarWords.get(i), word);
+          //     if (difference <= diffAtI) {
+          //       similarWords.add(i, s);
+          //     }
+          //     else {
+                similarWords.add(s);
+            //   }
+            // }
           }
-          else {
-            for (int i = 0; i <= similarWords.size(); i++) {
-              int diffAtI = checkDifference(similarWords.get(i), word);
-              if (difference <= diffAtI) {
-                similarWords.add(i, s);
-              }
-            }
-          } // end else
-        } // end second if
-      } // end first if
-    } // end main for loop
-    for (int i = 0; i < threeWords.length; i++) {
-      threeWords[i] = similarWords.get(i);
-    }
-    return threeWords;
-  } // end method
 
-  public static int checkDifference(String s, String word) {
-    int difference = 0;
-
-    for (int i = 0; i < word.length(); i++) {
-      if (s.charAt(i) != word.charAt(i)) {
-        difference++;
+            // int i = 0;
+            // boolean added = false;
+            // while ( (i < similarWords.size()) && (added == false) ){
+            //     int diffAtI = checkDifference(similarWords.get(i), word);
+            //     if (difference < diffAtI) {
+            //       similarWords.add(i, s);
+            //       added = true;
+            //     }
+            //     i++;
+        }
       }
+      for (int i = 0; i < threeWords.length; i++) {
+        threeWords[i] = similarWords.get(i);
+      }
+      return threeWords;
     }
-    return difference;
-  }
+
+    public static int checkDifference(String s, String word) {
+      int difference = 0;
+      int min = 0;
+
+      if (s.length() > word.length()) {
+        min = word.length();
+      }
+      else {
+        min = s.length();
+      }
+
+      for (int i = 0; i < min; i++) {
+        if (s.charAt(i) != word.charAt(i)) {
+          difference++;
+        }
+      }
+      return difference;
+    }
 
     // List<String> words = myList.stream()
     //                      .filter(s -> s.contains(word)
     //                      .collect(Collectors.toList()));
-  }
 
 }

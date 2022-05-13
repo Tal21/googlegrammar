@@ -7,6 +7,12 @@ Lauren Lee, Talia Hsia, Diana Akhmedova
 - SpellChecker compiles, runtime error where it spellchecks "no" when user
   is asked if they want to add the word to the dictionary.
 
+5/13/2022
+- SpellChecker suggests words, but it needs some work
+    * Maybe try to find a word in a word (ex: "hello" in "hellow")
+    * Maybe constrain the length to a one or two difference / margin of error
+      (ex: "hellow" would not suggest "h.", but would suggest "hello" or "bellow")
+
 NEXT GOALS:
 - Spell checker!
     * Suggest words (eg: Did you mean... __?)
