@@ -136,39 +136,41 @@ public class spellchecker {
   public static String[] similarWord(String word, String[] dictionary) {
     ArrayList<String> similarWords = new ArrayList<String>();
     String[] threeWords = new String[3];
-    int counter = 0;
-    int counter2 = 0;
+    // int counter = 0;
+    // int counter2 = 0;
 
     for (String s : dictionary) {
-      int difference = checkDifference(s, word);
-      if (difference <= 2) {
-        // checks if AL is empty
-        if (similarWords.isEmpty()) {
-          similarWords.add(s);
-        }
-        // checks if first chars are the same and if difference is less than or equal to 1
-        else if ((s.charAt(0) == word.charAt(0)) && difference <= 1) {
-          similarWords.add(counter, s);
-          counter++;
-          counter2++;
-        }
-        // checks if the word lengths are the same and if difference is less than or equal to 1
-        else if (s.length() == word.length() && difference <= 1) {
-          similarWords.add(counter2, s);
-          counter2++;
-        }
-        // otherwise add to the AL, sorting by lowest to highest difference
-        else {
-          // for (int i = counter2; i < similarWords.size(); i++) {
-          //
-          //     int diffAtI = checkDifference(similarWords.get(i), word);
-          //     if (difference <= diffAtI) {
-          //       similarWords.add(i, s);
-          //     }
-          //     else {
-                similarWords.add(s);
-            //   }
-            // }
+      if (s.length() == word.length()) {
+        int difference = checkDifference(s, word);
+        if (difference <= 1) {
+          // checks if AL is empty
+          if (similarWords.isEmpty()) {
+            similarWords.add(s);
+          }
+          // checks if first chars are the same and if difference is less than or equal to 1
+          // else if ((s.charAt(0) == word.charAt(0)) && difference <= 1) {
+          //   similarWords.add(counter, s);
+          //   counter++;
+          //   counter2++;
+          // }
+          // checks if the word lengths are the same and if difference is less than or equal to 1
+          // else if (s.length() == word.length() && difference <= 1) {
+          //   similarWords.add(counter2, s);
+          //   counter2++;
+          // }
+          // otherwise add to the AL, sorting by lowest to highest difference
+          else {
+            // for (int i = 0; i < similarWords.size(); i++) {
+            //
+            //     int diffAtI = checkDifference(similarWords.get(i), word);
+            //     if (difference <= diffAtI) {
+            //       similarWords.add(i, s);
+            //     }
+            //     else {
+                  similarWords.add(s);
+              //   }
+              // }
+            }
           }
 
             // int i = 0;
@@ -190,16 +192,16 @@ public class spellchecker {
 
     public static int checkDifference(String s, String word) {
       int difference = 0;
-      int min = 0;
+      // int min = 0;
+      //
+      // if (s.length() > word.length()) {
+      //   min = word.length();
+      // }
+      // else {
+      //   min = s.length();
+      // }
 
-      if (s.length() > word.length()) {
-        min = word.length();
-      }
-      else {
-        min = s.length();
-      }
-
-      for (int i = 0; i < min; i++) {
+      for (int i = 0; i < word.length(); i++) {
         if (s.charAt(i) != word.charAt(i)) {
           difference++;
         }
