@@ -20,6 +20,7 @@ NEXT GOALS:
 
 REFERENCES:
 - words.txt :: https://github.com/dwyl/english-words
+- grammar checker :: https://huggingface.co/prithivida/grammar_error_correcter_v1?text=i+know+who+you+is
 
 FOR RUNNING:
 $ javac autocomp.java -cp "./*"
