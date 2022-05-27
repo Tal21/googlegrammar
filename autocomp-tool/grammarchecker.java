@@ -8,11 +8,11 @@ import org.json.JSONArray;
 
 public class grammarchecker {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
     System.out.println("input a sentence for grammarchecking or input 'exit' to exit:");
     Scanner in = new Scanner(System.in);
     String strIn = in.nextLine();
-    String url = "api-inference.huggingface.co/models/prithivida/grammar_error_correcter_v1";  // example url which return json data
+    String url = "https://api-inference.huggingface.co/models/vennify/t5-base-grammar-correction";  // example url which return json data
 
     boolean finished;
     while (strIn.equals("exit") == false) {

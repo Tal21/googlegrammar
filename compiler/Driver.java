@@ -14,36 +14,30 @@ import com.sun.net.httpserver.HttpServer;
 
 public class Driver {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 7251), 0);
-    ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor)Executors.newFixedThreadPool(10);
+    ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor)Executors.newFixedThreadPool(10); // up to 10 ppl can handle your request
 
     MyHttpHandler myHttpHandler = new MyHttpHandler();
     server.createContext("/test", myHttpHandler);
-    server.setExecutor(threadPoolExecutor);
-    server.start();
-    logger.info("Server started on port 7251");
-    server.start();
+    server.setExecutor(threadPoolExecutor); // lets server handle multiple HHTP requests at the same time
+    server.start(); // starts the server
+    // two handlers, one input form (submit buttons), one autocompletion (gets response)
 
-    HttpExchange exchange = new HttpExchange();
-
-    MyHttpHandler handler = new MyHttpHandler();
-    //handler.handleGETRequest(exchange);
-    handler.handle(exchange);
+    //logger.info("Server started on port 7251");
   } // end main
 
 
-  private class MyHttpHandler implements HttpHandler {
-    @Override
+  private static class MyHttpHandler implements HttpHandler {
 
     public void handle(HttpExchange httpExchange) throws IOException {
       String requestParamValue=null;
       if("GET".equals(httpExchange.getRequestMethod())) {
          requestParamValue = handleGetRequest(httpExchange);
       }
-      else if("POST".equals(httpExchange)) {
-         requestParamValue = handlePostRequest(httpExchange);
-      }
+      // else if("POST".equals(httpExchange)) {
+      //    requestParamValue = handlePostRequest(httpExchange);
+      // }
       handleResponse(httpExchange,requestParamValue);
     }
 
@@ -58,61 +52,25 @@ public class Driver {
    private void handleResponse(HttpExchange httpExchange, String requestParamValue) throws IOException {
       OutputStream outputStream = httpExchange.getResponseBody();
       StringBuilder htmlBuilder = new StringBuilder();
-      htmlBuilder.append("<html>").
-        append("<body>").
-        append("<h1>").
-        append("Hello ")
+      htmlBuilder.append("<html>")  // generating a wesite with a specific HTML page
+        .append("<body>")
+        .append("<h1>")
+        .append("Hello ")
         .append(requestParamValue)
         .append("</h1>")
         .append("</body>")
         .append("</html>");
 
         // encode HTML content
-        String htmlResponse = StringEscapeUtils.escapeHtml4(htmlBuilder.toString());
+        // String htmlResponse = StringEscapeUtils.escapeHtml4(htmlBuilder.toString());
+        String htmlResponse = htmlBuilder.toString();
 
         // this line is a must
-        httpExchange.sendResponseHeaders(200, htmlResponse.length());
-        outputStream.write(htmlResponse.getBytes());
-        outputStream.flush();
-        outputStream.close();
+        httpExchange.sendResponseHeaders(200, htmlResponse.length()); // 200 is a status code, everyting is good response
+        outputStream.write(htmlResponse.getBytes()); // writes up response you were writing
+        outputStream.flush(); // cleans it up
+        outputStream.close(); // cleans it up
     }
   } // end MyHttpHandler
-
-  class PausableThreadPoolExecutor extends ThreadPoolExecutor {
-   private boolean isPaused;
-   private ReentrantLock pauseLock = new ReentrantLock();
-   private Condition unpaused = pauseLock.newCondition();
-
-   protected void beforeExecute(Thread t, Runnable r) {
-     super.beforeExecute(t, r);
-     pauseLock.lock();
-     try {
-       while (isPaused) unpaused.await();
-     } catch (InterruptedException ie) {
-       t.interrupt();
-     } finally {
-       pauseLock.unlock();
-     }
-   }
-
-   public void pause() {
-     pauseLock.lock();
-     try {
-       isPaused = true;
-     } finally {
-       pauseLock.unlock();
-     }
-   }
-
-   public void resume() {
-     pauseLock.lock();
-     try {
-       isPaused = false;
-       unpaused.signalAll();
-     } finally {
-       pauseLock.unlock();
-     }
-   }
- } // end PausableThreadPoolExecutor
 
 }

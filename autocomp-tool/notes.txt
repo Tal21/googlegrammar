@@ -20,7 +20,8 @@ NEXT GOALS:
 
 REFERENCES:
 - words.txt :: https://github.com/dwyl/english-words
-- grammar checker :: https://huggingface.co/prithivida/grammar_error_correcter_v1?text=i+know+who+you+is
+- grammar checker :: https://api-inference.huggingface.co/models/vennify/t5-base-grammar-correction
+                     // https://huggingface.co/prithivida/grammar_error_correcter_v1?text=i+know+who+you+is
 - StringEscapeUtils :: https://commons.apache.org/proper/commons-text/jacoco/org.apache.commons.text/StringEscapeUtils.java.html
 
 FOR RUNNING:

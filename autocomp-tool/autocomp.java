@@ -9,7 +9,6 @@ import org.json.JSONArray;
 
 class autocomp {
 
-
   public static void main(String[] args) throws Exception {
       System.out.println("input a sentence for autocompletion or input 'exit' to exit:");
       Scanner in = new Scanner(System.in);
