@@ -55,9 +55,13 @@ public class Driver {
       htmlBuilder.append("<html>")  // generating a wesite with a specific HTML page
         .append("<body>")
         .append("<h1>")
-        .append("Hello ")
-        .append(requestParamValue)
+        .append("Welcome to our Google Project!")
+        //.append(requestParamValue)
         .append("</h1>")
+        .append("<form action=\"/action_page.php\">")
+        .append("<label for=\"fname\">Insert text for autocompletion:</label>")
+        .append("<br><input type=\"text\" id=\"ftext\" name=\"ftext\"><br><br>")
+        .append("<input type=\"submit\" value=\"Submit\">")
         .append("</body>")
         .append("</html>");
 
