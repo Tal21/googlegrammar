@@ -53,8 +53,19 @@ public class Driver {
       OutputStream outputStream = httpExchange.getResponseBody();
       StringBuilder htmlBuilder = new StringBuilder();
       htmlBuilder.append("<html>")  // generating a wesite with a specific HTML page
+        .append("<head>")
+        .append("<style>")
+        .append("body {background-color: grey;}")
+        .append("h1 {color: white; }")
+        .append("label {font-size: 20px; font-family:courier; }")
+        .append("input {size: 40px;}")
+
+        .append("</style>")
+        .append("</head>")
+
         .append("<body>")
-        .append("<h1>")
+        .append("<center>")
+        .append("<h1 style= font-family:courier; >")
         .append("Welcome to our Google Project!")
         //.append(requestParamValue)
         .append("</h1>")
@@ -62,6 +73,7 @@ public class Driver {
         .append("<label for=\"fname\">Insert text for autocompletion:</label>")
         .append("<br><input type=\"text\" id=\"ftext\" name=\"ftext\"><br><br>")
         .append("<input type=\"submit\" value=\"Submit\">")
+        .append("</center>")
         .append("</body>")
         .append("</html>");
 
