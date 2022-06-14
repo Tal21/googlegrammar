@@ -13,6 +13,9 @@ Lauren Lee, Talia Hsia, Diana Akhmedova
     * Maybe constrain the length to a one or two difference / margin of error
       (ex: "hellow" would not suggest "h.", but would suggest "hello" or "bellow")
 
+6/13/2022
+- Attempting to input an HTML entry as a parameter of a Java file.
+
 NEXT GOALS:
 - Spell checker!
     * Suggest words (eg: Did you mean... __?)

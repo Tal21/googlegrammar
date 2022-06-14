@@ -8,9 +8,18 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.Condition;
 
+import javax.servlet.http.HttpServletResponse;
+
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+
+import java.io.*;
+import java.net.*;
+import java.nio.charset.*;
+import org.json.JSONTokener;
+import org.json.JSONObject;
+import org.json.JSONArray;
 
 public class Driver {
 
@@ -29,6 +38,9 @@ public class Driver {
 
 
   private static class MyHttpHandler implements HttpHandler {
+
+    String strIn = "";
+    ServeltRequest request = new ServeltRequest();
 
     public void handle(HttpExchange httpExchange) throws IOException {
       String requestParamValue=null;
@@ -71,7 +83,7 @@ public class Driver {
               .append("<tbody>")
                 .append("<tr>")
                   .append("<td>")
-                    .append("<h1 >") //style= font-family:courier;
+                    .append("<h1>") //style= font-family:courier;
                     .append("Welcome to our Google Project!")
                   //.append(requestParamValue)
                     .append("</h1>")
@@ -90,6 +102,7 @@ public class Driver {
         .append("</body>")
         .append("</html>");
 
+        strIn = request.getParameter(ftext);
         // encode HTML content
         // String htmlResponse = StringEscapeUtils.escapeHtml4(htmlBuilder.toString());
         String htmlResponse = htmlBuilder.toString();
@@ -99,6 +112,16 @@ public class Driver {
         outputStream.write(htmlResponse.getBytes()); // writes up response you were writing
         outputStream.flush(); // cleans it up
         outputStream.close(); // cleans it up
+    }
+
+    public String returnAutoComp() {
+      autocomp auto = new autocomp();
+      String url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
+      String data = auto.readUrl(url, strIn);
+      String output = auto.stringFullToken(strIn, data);
+      JSONTokener tokener = new JSONTokener(data);
+      JSONArray arr = new JSONArray(tokener);
+      return (arr.getJSONObject(0).get("generated_text"));
     }
   } // end MyHttpHandler
 
