@@ -1,3 +1,6 @@
+package compiler;
+import compiler.autocomp;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -7,8 +10,6 @@ import java.util.concurrent.AbstractExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.Condition;
-
-import javax.servlet.http.HttpServletResponse;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -23,7 +24,7 @@ import org.json.JSONArray;
 
 public class Driver {
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws Exception {
     HttpServer server = HttpServer.create(new InetSocketAddress("localhost", 7251), 0);
     ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor)Executors.newFixedThreadPool(10); // up to 10 ppl can handle your request
 
@@ -39,9 +40,6 @@ public class Driver {
 
   private static class MyHttpHandler implements HttpHandler {
 
-    String strIn = "";
-    ServeltRequest request = new ServeltRequest();
-
     public void handle(HttpExchange httpExchange) throws IOException {
       String requestParamValue=null;
       if("GET".equals(httpExchange.getRequestMethod())) {
@@ -50,7 +48,12 @@ public class Driver {
       // else if("POST".equals(httpExchange)) {
       //    requestParamValue = handlePostRequest(httpExchange);
       // }
-      handleResponse(httpExchange,requestParamValue);
+      try {
+        handleResponse(httpExchange, requestParamValue);
+      }
+      catch (Exception e) {
+        throw new IOException(e.getMessage());
+      }
     }
 
     private String handleGetRequest(HttpExchange httpExchange) {
@@ -61,7 +64,8 @@ public class Driver {
         .split("=")[1];
    }
 
-   private void handleResponse(HttpExchange httpExchange, String requestParamValue) throws IOException {
+   private void handleResponse(HttpExchange httpExchange, String requestParamValue) throws Exception {
+      String autocompleted = returnAutoComp(requestParamValue);
       OutputStream outputStream = httpExchange.getResponseBody();
       StringBuilder htmlBuilder = new StringBuilder();
       htmlBuilder.append("<html>")  // generating a wesite with a specific HTML page
@@ -93,16 +97,15 @@ public class Driver {
             .append("<table>")
           .append("</div>")
 
-        .append("<form action=\"/action_page.php\">")
+        .append("<form action=\"test\">")
         .append("<label for=\"fname\">Insert text for autocompletion:</label>")
         .append("<p> </p>")
-        .append("<br><input type=\"text\" id=\"ftext\" name=\"ftext\"><br><br>")
+        .append("<br><input type=\"text\" id=\"ftext\" name=\"ftext\" placeholder=\"Enter text to autocomplete:\" value=\""+autocompleted+"\"><br><br>")
         .append("<input type=\"submit\" value=\"Submit\">")
         .append("</center>")
         .append("</body>")
         .append("</html>");
 
-        strIn = request.getParameter(ftext);
         // encode HTML content
         // String htmlResponse = StringEscapeUtils.escapeHtml4(htmlBuilder.toString());
         String htmlResponse = htmlBuilder.toString();
@@ -114,14 +117,14 @@ public class Driver {
         outputStream.close(); // cleans it up
     }
 
-    public String returnAutoComp() {
-      autocomp auto = new autocomp();
-      String url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
-      String data = auto.readUrl(url, strIn);
-      String output = auto.stringFullToken(strIn, data);
-      JSONTokener tokener = new JSONTokener(data);
-      JSONArray arr = new JSONArray(tokener);
-      return (arr.getJSONObject(0).get("generated_text"));
+    public static String returnAutoComp(String requestParamValue) throws Exception {
+        autocomp auto = new autocomp();
+        String url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
+        String data = auto.readUrl(url, requestParamValue);
+        String output = auto.stringFullToken(requestParamValue, data);
+        JSONTokener tokener = new JSONTokener(data);
+        JSONArray arr = new JSONArray(tokener);
+        return arr.getJSONObject(0).get("generated_text").toString();
     }
   } // end MyHttpHandler
 
