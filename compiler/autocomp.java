@@ -1,3 +1,5 @@
+package compiler;
+
 import java.io.*;
 import java.util.*;
 import java.net.*;
@@ -7,7 +9,7 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 //import javax.json.stream;
 
-class autocomp {
+public class autocomp {
 
   public static void main(String[] args) throws Exception {
       System.out.println("input a sentence for autocompletion or input 'exit' to exit:");
@@ -52,10 +54,7 @@ class autocomp {
     return printtoken;
   }
 
-
-
-
-  private static String readUrl(String urlString, String postData) throws Exception {
+  public static String readUrl(String urlString, String postData) throws Exception {
       BufferedReader reader = null;
       String token = "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";
       try {
