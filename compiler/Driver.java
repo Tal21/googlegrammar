@@ -72,6 +72,7 @@ public class Driver {
         .append("label {font-size: 20px; }")
         .append("input {size: 40px;}")
         .append("table{ border-spacing:4px; border-color:grey; }")
+        .append("form {width: 100px; background-color: transparent;}")
 
         .append("</style>")
         .append("</head>")
