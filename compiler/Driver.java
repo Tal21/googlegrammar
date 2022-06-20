@@ -1,5 +1,6 @@
 package compiler;
 import compiler.autocomp;
+//import compiler.grammarchecker;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -126,6 +127,14 @@ public class Driver {
         JSONTokener tokener = new JSONTokener(data);
         JSONArray arr = new JSONArray(tokener);
         return arr.getJSONObject(0).get("generated_text").toString();
+
+        // grammarchecker grammar = new grammarchecker();
+        // String url = "https://api-inference.huggingface.co/models/vennify/t5-base-grammar-correction";  // example url which return json data
+        // String data = grammar.readUrl(url, requestParamValue);
+        // String output = grammar.stringFullToken(requestParamValue, data);
+        // JSONTokener tokener = new JSONTokener(data);
+        // JSONArray arr = new JSONArray(tokener);
+        // return arr.getJSONObject(0).get("generated_text").toString();
     }
   } // end MyHttpHandler
 

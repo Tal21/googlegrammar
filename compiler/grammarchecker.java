@@ -42,7 +42,7 @@ public class grammarchecker {
 
   // Post data: hello my name is greg
 
-  private static String readUrl(String urlString, String postData) throws Exception {
+  public static String readUrl(String urlString, String postData) throws Exception {
       BufferedReader reader = null;
       String token = "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";
       try {
