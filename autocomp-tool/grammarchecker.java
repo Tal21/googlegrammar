@@ -38,13 +38,17 @@ public class grammarchecker {
     return printtoken;
   }
 
+  // Post data: hello my name is greg
+
   private static String readUrl(String urlString, String postData) throws Exception {
       BufferedReader reader = null;
       String token = "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";
       try {
           URL url = new URL(urlString);
           HttpURLConnection conn= (HttpURLConnection) url.openConnection(); //connect to internet
-          byte[] postDataBytes = postData.getBytes("UTF-8"); //encoding
+
+          String apiInput = "{inputs: \"" + postData + "\"}";
+          byte[] postDataBytes = apiInput.getBytes("UTF-8"); //encoding
 
           conn.setRequestProperty("Authorization", "Bearer " + token); //authorization token
           conn.setRequestMethod("POST");
