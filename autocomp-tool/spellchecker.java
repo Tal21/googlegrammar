@@ -4,6 +4,7 @@ import java.io.*;
 public class spellchecker {
 
   static int errorCount = 0;
+  static ArrayList<String> similarWords = new ArrayList<String>();
 
   public static void main(String[] args) {
     String[] words = readDictionary("words.txt");
@@ -44,23 +45,57 @@ public class spellchecker {
         //errors = true;
 
         String[] threeWords = similarWord(check, dictionary);
-        System.out.println("Did you mean: " + threeWords[0] + "[1], " + threeWords[1] + "[2], or " + threeWords[2] + "[3]? (no/1/2/3)");
-        Scanner in = new Scanner(System.in);
-        String strIn = in.nextLine();
-        if (strIn.equals("1")) {
-          check = threeWords[0];
-          errorCount--;
-        }
-        else if (strIn.equals("2")) {
-          check = threeWords[1];
-          errorCount--;
-        }
-        else if (strIn.equals("3")) {
-          check = threeWords[2];
-          errorCount--;
+        if (similarWords.size() != 0) {
+          if (similarWords.size() >= 3) {
+            System.out.println("Did you mean: " + threeWords[0] + "[1], " + threeWords[1] + "[2], or " + threeWords[2] + "[3]? (no/1/2/3)");
+          }
+          if (similarWords.size() == 2) {
+            System.out.println("Did you mean: " + threeWords[0] + "[1] or " + threeWords[1] + "[2]? (no/1/2)");
+          }
+          if (similarWords.size() == 1) {
+            System.out.println("Did you mean: " + threeWords[0] + "[1]? (no/1)");
+          }
+          Scanner in = new Scanner(System.in);
+          String strIn = in.nextLine();
+          if (strIn.equals("1")) {
+            check = threeWords[0];
+            errorCount--;
+          }
+          else if (strIn.equals("2")) {
+            check = threeWords[1];
+            errorCount--;
+          }
+          else if (strIn.equals("3")) {
+            check = threeWords[2];
+            errorCount--;
+          }
+          else {
+            System.out.println("\nWould you like to add " + check + " to the dictionary? (yes/no)");
+            Scanner inn = new Scanner(System.in);
+            String strInn = in.nextLine();
+
+            if (strIn.toLowerCase().equals("yes") || strIn.toLowerCase().equals("y")) {
+              try {
+                BufferedWriter writer = new BufferedWriter(new FileWriter("words.txt", true));
+                writer.write(check);
+                writer.close();
+                errorCount--;
+              }
+              catch (IOException e) {
+                System.out.println(e);
+              }
+            }
+            else {
+              System.out.println("\nThe word was not added.");
+              //put in closest word
+            }
+          }
         }
         else {
+          System.out.println("There are no similar words.");
           System.out.println("\nWould you like to add " + check + " to the dictionary? (yes/no)");
+          Scanner in = new Scanner(System.in);
+          String strIn = in.nextLine();
           Scanner inn = new Scanner(System.in);
           String strInn = in.nextLine();
 
@@ -134,7 +169,6 @@ public class spellchecker {
   }
 
   public static String[] similarWord(String word, String[] dictionary) {
-    ArrayList<String> similarWords = new ArrayList<String>();
     String[] threeWords = new String[3];
     // int counter = 0;
     // int counter2 = 0;
@@ -184,8 +218,15 @@ public class spellchecker {
             //     i++;
         }
       }
-      for (int i = 0; i < threeWords.length; i++) {
-        threeWords[i] = similarWords.get(i);
+      if (similarWords.size() >= 3) {
+        for (int i = 0; i < threeWords.length; i++) {
+          threeWords[i] = similarWords.get(i);
+        }
+      }
+      else {
+        for (int i = 0; i < similarWords.size(); i++) {
+          threeWords[i] = similarWords.get(i);
+        }
       }
       return threeWords;
     }
