@@ -92,7 +92,16 @@ public class spellcheckReturn {
         threeWords[i] = similarWords.get(i);
       }
     }
-    ret = threeWords[0] + ", " + threeWords[1] + ", " + threeWords[2];
+
+    if (similarWords.size() >= 3) {
+      ret = threeWords[0] + ", " + threeWords[1] + ", " + threeWords[2];
+    }
+    if (similarWords.size() == 2) {
+      ret = threeWords[0] + ", " + threeWords[1];
+    }
+    if (similarWords.size() == 1) {
+      ret = threeWords[0];
+    }
     return ret;
   }
 
