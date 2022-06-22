@@ -107,7 +107,7 @@ public class Driver {
         .append("</center>")
         .append("</body>")
         .append("</html>");
-
+ 
         // encode HTML content
         // String htmlResponse = StringEscapeUtils.escapeHtml4(htmlBuilder.toString());
         String htmlResponse = htmlBuilder.toString();
