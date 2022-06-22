@@ -1,6 +1,7 @@
 package compiler;
 import compiler.autocomp;
 import compiler.grammarchecker;
+import compiler.spellchecker;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -66,6 +67,7 @@ public class Driver {
    }
 
    private void handleResponse(HttpExchange httpExchange, String requestParamValue) throws Exception {
+     String spellCheck = returnSpellCheck(requestParamValue);
      String grammarCheck = returnGrammarCheck(requestParamValue);
       String autocompleted = returnAutoComp(requestParamValue);
       OutputStream outputStream = httpExchange.getResponseBody();
@@ -107,9 +109,9 @@ public class Driver {
         .append("<form action=\"test\">")
         .append("<label for=\"fname\">Insert text for autocompletion:</label>")
         .append("<p> </p>")
-        .append("<textarea style=\"display: inline;\" type=\"text\" id=\"ftext\" name=\"ftext\" placeholder=\"Enter text to autocomplete:\" rows=\"4\" cols=\"50\">"+requestParamValue+"</textarea>")
-        .append("<textarea style=\"display: inline;\" type=\"text\" id=\"spell\" placeholder=\"Your Spell Check Errors\" rows=\"4\" cols=\"50\">"+grammarCheck+"</textarea>")
-        .append("<textarea style=\"display: block;\" type=\"text\" id=\"auto\" name=\"aut\" placeholder=\"Your autocompleted text\" rows=\"10\" cols=\"50\">"+autocompleted+"</textarea>")
+        .append("<textarea style=\"display: inline;\" type=\"text\" id=\"ftext\" name=\"ftext\" placeholder=\"Enter text to autocomplete:\" rows=\"4\" cols=\"20\">"+spaceCheck(requestParamValue)+"</textarea>")
+        .append("<textarea style=\"display: inline;\" type=\"text\" id=\"spell\" placeholder=\"Your Spell Check Errors\" rows=\"4\" cols=\"20\">"+grammarCheck+"\n"+spellCheck+"</textarea>")
+        .append("<textarea style=\"display: block;\" type=\"text\" id=\"auto\" placeholder=\"Your autocompleted text\" rows=\"10\" cols=\"50\">"+autocompleted+"</textarea>")
         .append("<input type=\"submit\" value=\"Submit\">")
         .append("</center>")
         .append("</body>")
@@ -170,16 +172,17 @@ public class Driver {
         String s = arr.getJSONObject(0).get("generated_text").toString();
         return spaceCheck(s);
 
-        // grammarchecker grammar = new grammarchecker();
-        // String url = "https://api-inference.huggingface.co/models/vennify/t5-base-grammar-correction";  // example url which return json data
-        // String result = URLDecoder.decode(requestParamValue, StandardCharsets.UTF_8);
-        // String data = grammar.readUrl(url, result);
-        // //String output = grammar.stringFullToken(requestParamValue, data);
-        // JSONTokener tokener = new JSONTokener(data);
-        // JSONArray arr = new JSONArray(tokener);
-        // String s = arr.getJSONObject(0).get("generated_text").toString();
-        // System.out.println(s);
-        // return checker(s);
+    }
+
+    public static String returnSpellCheck(String requestParamValue) throws Exception {
+      spellchecker spell = new spellchecker();
+      String[] words = spell.readDictionary("words.txt");
+      if (spell.spellCheck(spaceCheck(requestParamValue), words) == 0) {
+        return "No spelling errors!";
+      }
+      else {
+        return "Number of incorrectly spelled words: " + spell.errorCount;
+      }
     }
   } // end MyHttpHandler
 
