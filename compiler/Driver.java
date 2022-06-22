@@ -75,7 +75,7 @@ public class Driver {
         .append("body {background-color: grey; font-family: courier; position:relative; background-image:linear-gradient(0deg, rgba(100,252,223,1) 0%, rgba(38,144,170,1) 20%, rgba(65,82,112,1) 100%);}")
         .append("h1 {color: white; }")
         .append("label {font-size: 20px; }")
-        .append("input {size: 40px;}")
+        .append("input {size: 150px;}")
         .append("table{ border-spacing:4px; border-color:grey; }")
         .append("form {width: 100px; background-color: transparent;}")
 
@@ -102,7 +102,7 @@ public class Driver {
         .append("<form action=\"test\">")
         .append("<label for=\"fname\">Insert text for autocompletion:</label>")
         .append("<p> </p>")
-        .append("<br><input type=\"text\" id=\"ftext\" name=\"ftext\" placeholder=\"Enter text to autocomplete:\" value=\""+autocompleted+"\"><br><br>")
+        .append("<br><input type=\"text\" id=\"ftext\" name=\"ftext\" placeholder=\"Enter text to autocomplete:\" value=\""+autocompleted+"\"><textarea id=\"other\" name=\"other\" rows=\"4\" cols=\"50\"></textarea><br><br>")
         .append("<input type=\"submit\" value=\"Submit\">")
         .append("</center>")
         .append("</body>")
@@ -119,6 +119,10 @@ public class Driver {
         outputStream.close(); // cleans it up
     }
 
+    public static String spaceCheck(String s) {
+        return s.replace('+', ' ');
+    }
+
     public static String returnAutoComp(String requestParamValue) throws Exception {
         autocomp auto = new autocomp();
         String url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
@@ -126,7 +130,9 @@ public class Driver {
         String output = auto.stringFullToken(requestParamValue, data);
         JSONTokener tokener = new JSONTokener(data);
         JSONArray arr = new JSONArray(tokener);
-        return arr.getJSONObject(0).get("generated_text").toString();
+        String s = arr.getJSONObject(0).get("generated_text").toString();
+        return spaceCheck(s);
+        //return arr.getJSONObject(0).get("generated_text").toString();
 
         // grammarchecker grammar = new grammarchecker();
         // String url = "https://api-inference.huggingface.co/models/vennify/t5-base-grammar-correction";  // example url which return json data
