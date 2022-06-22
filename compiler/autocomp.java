@@ -60,6 +60,7 @@ public class autocomp {
       try {
           URL url = new URL(urlString);
           HttpURLConnection conn= (HttpURLConnection) url.openConnection(); //connect to internet
+          System.out.println(postData);
           byte[] postDataBytes = postData.getBytes("UTF-8"); //encoding
 
           conn.setRequestProperty("Authorization", "Bearer " + token); //authorization token

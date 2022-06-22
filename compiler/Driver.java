@@ -1,6 +1,6 @@
 package compiler;
-import compiler.autocomp;
-//import compiler.grammarchecker;
+//import compiler.autocomp;
+import compiler.grammarchecker;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -102,7 +102,7 @@ public class Driver {
         .append("<form action=\"test\">")
         .append("<label for=\"fname\">Insert text for autocompletion:</label>")
         .append("<p> </p>")
-        .append("<br><input type=\"text\" id=\"ftext\" name=\"ftext\" placeholder=\"Enter text to autocomplete:\" value=\""+autocompleted+"\"><textarea id=\"other\" name=\"other\" rows=\"4\" cols=\"50\"></textarea><br><br>")
+        .append("<br><textarea type=\"text\" id=\"ftext\" name=\"ftext\" placeholder=\"Enter text to autocomplete:\" rows=\"4\" cols=\"50\">"+autocompleted+"</textarea><br><br>")
         .append("<input type=\"submit\" value=\"Submit\">")
         .append("</center>")
         .append("</body>")
@@ -124,23 +124,25 @@ public class Driver {
     }
 
     public static String returnAutoComp(String requestParamValue) throws Exception {
-        autocomp auto = new autocomp();
-        String url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
-        String data = auto.readUrl(url, requestParamValue);
-        String output = auto.stringFullToken(requestParamValue, data);
+        // autocomp auto = new autocomp();
+        // String url = "https://api-inference.huggingface.co/models/gpt2";  // example url which return json data
+        // String result = URLDecoder.decode(requestParamValue, StandardCharsets.UTF_8);
+        // String data = auto.readUrl(url, result);
+        // // String output = auto.stringFullToken(requestParamValue, data);
+        // JSONTokener tokener = new JSONTokener(data);
+        // JSONArray arr = new JSONArray(tokener);
+        // String s = arr.getJSONObject(0).get("generated_text").toString();
+        // return spaceCheck(s);
+
+        grammarchecker grammar = new grammarchecker();
+        String url = "https://api-inference.huggingface.co/models/vennify/t5-base-grammar-correction";  // example url which return json data
+        String result = URLDecoder.decode(requestParamValue, StandardCharsets.UTF_8);
+        String data = grammar.readUrl(url, result);
+        //String output = grammar.stringFullToken(requestParamValue, data);
         JSONTokener tokener = new JSONTokener(data);
         JSONArray arr = new JSONArray(tokener);
         String s = arr.getJSONObject(0).get("generated_text").toString();
         return spaceCheck(s);
-        //return arr.getJSONObject(0).get("generated_text").toString();
-
-        // grammarchecker grammar = new grammarchecker();
-        // String url = "https://api-inference.huggingface.co/models/vennify/t5-base-grammar-correction";  // example url which return json data
-        // String data = grammar.readUrl(url, requestParamValue);
-        // String output = grammar.stringFullToken(requestParamValue, data);
-        // JSONTokener tokener = new JSONTokener(data);
-        // JSONArray arr = new JSONArray(tokener);
-        // return arr.getJSONObject(0).get("generated_text").toString();
     }
   } // end MyHttpHandler
 
