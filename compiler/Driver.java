@@ -110,7 +110,9 @@ public class Driver {
         .append("<label for=\"fname\">Insert text for autocompletion:</label>")
         .append("<p> </p>")
         .append("<textarea style=\"display: inline;\" type=\"text\" id=\"ftext\" name=\"ftext\" placeholder=\"Enter text to autocomplete:\" rows=\"4\" cols=\"20\">"+spaceCheck(requestParamValue)+"</textarea>")
-        .append("<textarea style=\"display: inline;\" type=\"text\" id=\"spell\" placeholder=\"Your Spell Check Errors\" rows=\"4\" cols=\"20\">"+grammarCheck+"\n"+spellCheck+"</textarea>")
+        .append("<textarea style=\"display: inline;\" type=\"text\" id=\"spell\" placeholder=\"Your Spell Check Errors\" rows=\"4\" cols=\"20\">"+grammarCheck + "\n" + spellCheck +"</textarea>")
+        .append("<textarea style=\"display: inline;\" type=\"text\" id=\"spell\" placeholder=\"Your Spell Check Errors\" rows=\"4\" cols=\"20\">"+spellCheck +"</textarea>")
+        .append("<input type=\"addDict\" value=\"Add to Dictionaryt\">")
         .append("<textarea style=\"display: block;\" type=\"text\" id=\"auto\" placeholder=\"Your autocompleted text\" rows=\"10\" cols=\"50\">"+autocompleted+"</textarea>")
         .append("<input type=\"submit\" value=\"Submit\">")
         .append("</center>")
@@ -181,7 +183,9 @@ public class Driver {
         return "No spelling errors!";
       }
       else {
-        return "Number of incorrectly spelled words: " + spell.errorCount;
+        String retVal = "Did you mean: " + spell.threeWords[0] + "[1], " + spell.threeWords[1] + "[2], or " + spell.threeWords[2] + "[3]? (no/1/2/3)";
+        retVal = retVal + "Number of incorrectly spelled words: " + spell.errorCount;
+        return retVal;
       }
     }
   } // end MyHttpHandler

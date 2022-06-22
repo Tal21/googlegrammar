@@ -6,6 +6,7 @@ import java.io.*;
 public class spellchecker {
 
   static int errorCount = 0;
+  static String[] threeWords;
 
   public static void main(String[] args) {
     String[] words = readDictionary("words.txt");
@@ -45,7 +46,7 @@ public class spellchecker {
         errorCount++;
         //errors = true;
 
-        String[] threeWords = similarWord(check, dictionary);
+        threeWords = similarWord(check, dictionary);
         System.out.println("Did you mean: " + threeWords[0] + "[1], " + threeWords[1] + "[2], or " + threeWords[2] + "[3]? (no/1/2/3)");
         Scanner in = new Scanner(System.in);
         String strIn = in.nextLine();
@@ -186,7 +187,7 @@ public class spellchecker {
             //     i++;
         }
       }
-      for (int i = 0; i < threeWords.length; i++) {
+      for (int i = 0; i < threeWords.length && i <similarWords.size(); i++) {
         threeWords[i] = similarWords.get(i);
       }
       return threeWords;
