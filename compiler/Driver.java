@@ -1,6 +1,6 @@
 package compiler;
 import compiler.autocomp;
-//import compiler.grammarchecker;
+import compiler.grammarchecker;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -66,6 +66,7 @@ public class Driver {
    }
 
    private void handleResponse(HttpExchange httpExchange, String requestParamValue) throws Exception {
+     String grammarCheck = returnGrammarCheck(requestParamValue);
       String autocompleted = returnAutoComp(requestParamValue);
       OutputStream outputStream = httpExchange.getResponseBody();
       StringBuilder htmlBuilder = new StringBuilder();
@@ -78,6 +79,10 @@ public class Driver {
         .append("input {size: 150px;}")
         .append("table{ border-spacing:4px; border-color:grey; }")
         .append("form {width: 100px; background-color: transparent;}")
+
+        .append(".inline{")
+        .append("display: inline;}")
+
 
         .append("</style>")
         .append("</head>")
@@ -102,7 +107,9 @@ public class Driver {
         .append("<form action=\"test\">")
         .append("<label for=\"fname\">Insert text for autocompletion:</label>")
         .append("<p> </p>")
-        .append("<br><textarea type=\"text\" id=\"ftext\" name=\"ftext\" placeholder=\"Enter text to autocomplete:\" rows=\"4\" cols=\"50\">"+autocompleted+"</textarea><br><br>")
+        .append("<textarea style=\"display: inline;\" type=\"text\" id=\"ftext\" name=\"ftext\" placeholder=\"Enter text to autocomplete:\" rows=\"4\" cols=\"50\">"+requestParamValue+"</textarea>")
+        .append("<textarea style=\"display: inline;\" type=\"text\" id=\"spell\" placeholder=\"Your Spell Check Errors\" rows=\"4\" cols=\"50\">"+grammarCheck+"</textarea>")
+        .append("<textarea style=\"display: block;\" type=\"text\" id=\"auto\" name=\"aut\" placeholder=\"Your autocompleted text\" rows=\"10\" cols=\"50\">"+autocompleted+"</textarea>")
         .append("<input type=\"submit\" value=\"Submit\">")
         .append("</center>")
         .append("</body>")
@@ -134,15 +141,18 @@ public class Driver {
         String s = arr.getJSONObject(0).get("generated_text").toString();
         return spaceCheck(s);
 
-        // grammarchecker grammar = new grammarchecker();
-        // String url = "https://api-inference.huggingface.co/models/vennify/t5-base-grammar-correction";  // example url which return json data
-        // String result = URLDecoder.decode(requestParamValue, StandardCharsets.UTF_8);
-        // String data = grammar.readUrl(url, result);
-        // //String output = grammar.stringFullToken(requestParamValue, data);
-        // JSONTokener tokener = new JSONTokener(data);
-        // JSONArray arr = new JSONArray(tokener);
-        // String s = arr.getJSONObject(0).get("generated_text").toString();
-        // return spaceCheck(s);
+    }
+
+    public static String returnGrammarCheck(String requestParamValue) throws Exception{
+      grammarchecker grammar = new grammarchecker();
+      String url = "https://api-inference.huggingface.co/models/vennify/t5-base-grammar-correction";  // example url which return json data
+      String result = URLDecoder.decode(requestParamValue, StandardCharsets.UTF_8);
+      String data = grammar.readUrl(url, result);
+      //String output = grammar.stringFullToken(requestParamValue, data);
+      JSONTokener tokener = new JSONTokener(data);
+      JSONArray arr = new JSONArray(tokener);
+      String s = arr.getJSONObject(0).get("generated_text").toString();
+      return spaceCheck(s);
     }
   } // end MyHttpHandler
 
