@@ -5,6 +5,7 @@ public class spellcheckReturn {
 
   static int errorCount = 0;
   static ArrayList<String> similarWords = new ArrayList<String>();
+  static ArrayList<String> incorrectWords = new ArrayList<String>();
 
   public static void main(String[] args) {
     String[] words = readDictionary("words.txt");
@@ -13,9 +14,9 @@ public class spellcheckReturn {
   }
 
   public static ArrayList<String> spellCheck(String input, String[] dictionary) {
+    incorrectWords.clear();
     String check = "";
     boolean errors = false;
-    ArrayList<String> incorrectWords = new ArrayList<String>();
 
     Scanner sc = new Scanner(input);
     sc.useDelimiter("\\s+");

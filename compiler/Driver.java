@@ -1,7 +1,7 @@
 package compiler;
 import compiler.autocomp;
 import compiler.grammarchecker;
-import compiler.spellchecker;
+//import compiler.spellchecker;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -67,7 +67,7 @@ public class Driver {
    }
 
    private void handleResponse(HttpExchange httpExchange, String requestParamValue) throws Exception {
-     String spellCheck = returnSpellCheck(requestParamValue);
+     //String spellCheck = returnSpellCheck(requestParamValue);
      String grammarCheck = returnGrammarCheck(requestParamValue);
       String autocompleted = returnAutoComp(requestParamValue);
       OutputStream outputStream = httpExchange.getResponseBody();
@@ -77,10 +77,11 @@ public class Driver {
         .append("<style>")
         .append("body {background-color: grey; font-family: courier; position:relative; background-image:linear-gradient(0deg, rgba(100,252,223,1) 0%, rgba(38,144,170,1) 20%, rgba(65,82,112,1) 100%);}")
         .append("h1 {color: white; }")
-        .append("label {font-size: 20px; }")
+        .append("label {font-size: 20px; color: white; align-items: center;}")
         .append("input {size: 150px;}")
         .append("table{ border-spacing:4px; border-color:grey; }")
         .append("form {width: 100px; background-color: transparent;}")
+        .append("banner {display: flex; align-items: center;}")
 
         .append(".inline{")
         .append("display: inline;}")
@@ -102,20 +103,45 @@ public class Driver {
                     .append("</h1>")
                   .append("</td>")
                 .append("</tr>")
+                .append("<tr>")
+                .append("<td>")
+                .append("<label for=\"fname\">Insert text for autocompletion:</label>")
+                .append("</td>")
+                .append("</tr>")
+                .append("</center>")
+                .append("<tr>")
+                .append("<td>")
+                .append("<form action=\"test\">")
+                .append("<p> </p>")
+                .append("<textarea style=\"display: inline;\" type=\"text\" id=\"ftext\" name=\"ftext\" placeholder=\"Enter text to autocomplete:\" rows=\"13\" cols=\"170\">"+spaceCheck(requestParamValue)+"</textarea>")
+                //.append("<textarea style=\"display: inline;\" type=\"text\" id=\"spell\" placeholder=\"Your Spell Check Errors\" rows=\"4\" cols=\"20\">"+spellCheck +"</textarea>")
+                //.append("<input type=\"addDict\" value=\"Add to Dictionaryt\">")
+                .append("<input type=\"submit\" value=\"Submit\">")
+                .append("</td>")
+                .append("</tr>")
+                .append("<tr>")
+                .append("<center style= text-align: center;>")
+                .append("<td>")
+                .append("<label for=\"fname\">Autocompleter:</label>")
+                .append("</td>")
+                .append("</center>")
+                .append("<td>")
+                .append("<textarea style=\"display: block;\" type=\"text\" id=\"auto\" placeholder=\"Your autocompleted text\" rows=\"13\" cols=\"170\">"+autocompleted+"</textarea>")
+                .append("</td>")
+                .append("</tr>")
+                .append("<tr>")
+                .append("<center style= text-align: center;>")
+                .append("<td>")
+                .append("<label for=\"fname\">Grammarchecker:</label>")
+                .append("</td>")
+                .append("</center>")
+                .append("<td>")
+                .append("<textarea style=\"display: inline;\" type=\"text\" id=\"spell\" placeholder=\"Your Grammar Check Errors\" rows=\"13\" cols=\"170\">"+grammarCheck+"</textarea>")
+                .append("</td>")
+                .append("</tr>")
               .append("</tbody")
-            .append("<table>")
+            .append("</table>")
           .append("</div>")
-
-        .append("<form action=\"test\">")
-        .append("<label for=\"fname\">Insert text for autocompletion:</label>")
-        .append("<p> </p>")
-        .append("<textarea style=\"display: inline;\" type=\"text\" id=\"ftext\" name=\"ftext\" placeholder=\"Enter text to autocomplete:\" rows=\"4\" cols=\"20\">"+spaceCheck(requestParamValue)+"</textarea>")
-        .append("<textarea style=\"display: inline;\" type=\"text\" id=\"spell\" placeholder=\"Your Spell Check Errors\" rows=\"4\" cols=\"20\">"+grammarCheck + "\n" + spellCheck +"</textarea>")
-        .append("<textarea style=\"display: inline;\" type=\"text\" id=\"spell\" placeholder=\"Your Spell Check Errors\" rows=\"4\" cols=\"20\">"+spellCheck +"</textarea>")
-        .append("<input type=\"addDict\" value=\"Add to Dictionaryt\">")
-        .append("<textarea style=\"display: block;\" type=\"text\" id=\"auto\" placeholder=\"Your autocompleted text\" rows=\"10\" cols=\"50\">"+autocompleted+"</textarea>")
-        .append("<input type=\"submit\" value=\"Submit\">")
-        .append("</center>")
         .append("</body>")
         .append("</html>");
 
@@ -160,7 +186,7 @@ public class Driver {
       JSONTokener tokener = new JSONTokener(data);
       JSONArray arr = new JSONArray(tokener);
       String s = arr.getJSONObject(0).get("generated_text").toString();
-      return spaceCheck(s);
+      return checker(s);
     }
 
     public static String returnAutoComp(String requestParamValue) throws Exception {
@@ -176,18 +202,34 @@ public class Driver {
 
     }
 
-    public static String returnSpellCheck(String requestParamValue) throws Exception {
-      spellchecker spell = new spellchecker();
-      String[] words = spell.readDictionary("words.txt");
-      if (spell.spellCheck(spaceCheck(requestParamValue), words) == 0) {
-        return "No spelling errors!";
-      }
-      else {
-        String retVal = "Did you mean: " + spell.threeWords[0] + "[1], " + spell.threeWords[1] + "[2], or " + spell.threeWords[2] + "[3]? (no/1/2/3)";
-        retVal = retVal + "Number of incorrectly spelled words: " + spell.errorCount;
-        return retVal;
-      }
-    }
+    // public static String returnSpellCheck(String requestParamValue) throws Exception {
+    //   spellcheckReturn spell = new spellcheckReturn();
+    //   String[] words = spell.readDictionary("words.txt");
+    //   String retWords[] = new String[3];
+    //   String retVal = "";
+    //   if (spell.incorrectWords.size() == 0) {
+    //     return "No spelling errors!";
+    //   }
+    //   else {
+    //     for (String s : spell.incorrectWords) {
+    //       similarWord(s, words);
+    //       if (spell.similarWords.size() >= 3) {
+    //         retVal = "Did you mean: " + spell.retWords[0] + "[1], " + spell.retWords[1] + "[2], or " + spell.retWords[2] + "[3]? (no/1/2/3)";
+    //       }
+    //       else if (spell.similarWords.size() == 2) {
+    //         retVal = "Did you mean: " + spell.retWords[0] + "[1] or " + spell.retWords[1] + "[2]? (no/1/2/3)";
+    //       }
+    //       else if (spell.similarWords.size() == 1) {
+    //         retVal = "Did you mean: " + spell.threeWords[0] + "[1]? (no/1/2/3)";
+    //       }
+    //       else {
+    //         retVal = "There are no similar words."
+    //       }
+    //     retVal = retVal + "\nNumber of incorrectly spelled words: " + spell.errorCount;
+    //     return retVal;
+    //     }
+    //   }
+    // }
   } // end MyHttpHandler
 
 }
